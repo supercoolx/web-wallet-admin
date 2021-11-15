@@ -21,7 +21,9 @@ const request = <T>(
     [payloadKey]: data,
     headers,
     method: method.toUpperCase() as Method,
-    url,
+    url: url?.startsWith('/')
+      ? `${window.location.protocol}//${window.location.host}${url}`
+      : url,
     withCredentials: CORS_DISABLED !== 'true',
     validateStatus(status) {
       return status >= 200 && status < 500; // only throw on status 500

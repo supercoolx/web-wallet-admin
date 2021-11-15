@@ -2,12 +2,12 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 
-function Dashboard() {
+function Reports() {
   return (
     <MainLayout>
-      <div className="container p-6 mx-auto space-y-2">Dashboard</div>
+      <div className="container p-6 mx-auto space-y-2">reports</div>
     </MainLayout>
   );
 }
 
-export default observer(Dashboard);
+export default observer(Reports);

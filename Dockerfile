@@ -3,7 +3,7 @@ FROM node:14-alpine as builder
 
 RUN apk update; apk add --no-cache git
 
-WORKDIR /opt/webwallet
+WORKDIR /opt/walletadmin
 
 COPY . .
 
@@ -23,6 +23,6 @@ COPY nginx/default.conf /etc/nginx/conf.d/
 RUN rm -rf /usr/share/nginx/html/*
 
 ## From 'builder' stage copy over the artifacts in build folder to default nginx public folder
-COPY --from=builder /opt/webwallet/dist /usr/share/nginx/html
+COPY --from=builder /opt/walletadmin/dist /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]

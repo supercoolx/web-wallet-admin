@@ -9,7 +9,7 @@
   <h3 align="center">Equs Web Wallet</h3>
 
   <p align="center">
-    Crypto Wallet
+    Wallet Admin
     <br />
     <a href="https://blockchainsinc.atlassian.net/wiki/spaces/GENBANK/pages/8052211771/Web+Wallet"><strong>Explore the docs »</strong></a>
     <br />
@@ -56,13 +56,13 @@
 
 ## About The Project
 
-Crypto Wallet.
+Crypto Wallet admin UI for handling settlement and distribution of exchange provisions.
 
 ### Built With
 
--   [React](https://reactjs.org/)
--   [Materail-UI](https://material-ui.com/)
--   [MobX](https://mobx.js.org/)
+- [React](https://reactjs.org/)
+- [Materail-UI](https://material-ui.com/)
+- [MobX](https://mobx.js.org/)
 
 <!-- GETTING STARTED -->
 
@@ -74,11 +74,14 @@ To get a local copy up and running follow these simple steps.
 
 This is an example of how to list things you need to use the software and how to install them.
 
--   npm
+- npm
+
     ```sh
     npm install npm@latest -g
     ```
--   yarn
+
+- yarn
+
     ```sh
     npm install --global yarn
     ```
@@ -86,10 +89,13 @@ This is an example of how to list things you need to use the software and how to
 ### Installation
 
 1. Clone the repo
+
     ```sh
     git clone https://git.slock.it/equs/crypto/web-wallet.git
     ```
+
 2. Install NPM packages
+
     ```sh
     yarn install
     ```
@@ -110,8 +116,6 @@ You will also see any lint errors in the console.
 
 Launches the linter.
 
-
-
 ### `yarn generate:version`
 
 Creates `src/environments/version.ts` that will be use to display version in Apps footer. The script is automatically executed during package stage in Pipeline builds.
@@ -124,46 +128,24 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-<!-- LOCAL DEPLOYMENT -->
-## Local Development
-
-With a local installed helm and a running kubernetes (for instance via docker-desktop), the web-wallet can be deployed via commandline.
-Example call:
-
-helm upgrade --debug --install --wait --create-namespace --namespace local-minikube \
---set ingress.host=local.netid.develop.bc-labs.dev \
---set ingress.enabled=true \
---set ingress.mockService.enabled=true \
---set ingress.mockService.url=f4cde22d-60b0-406b-ab0c-5dd240289f09.mock.pstmn.io \
---set image.repository="docker.slock.it/equs/crypto" \
---set image.name=web-wallet \
---set image.tag=in-328-create-build-and-deployment \
-webwallet ./helm
-
-To use the ingress a contour proxy needs to be running in the local kubernetes cluster (see the netid/deploy project for the contour proxy deployment)
-
 ## Pipeline builds and deployments
 
 Stages:
 
--   Build - try generate production build.
--   Test - run several tests.
--   Package - dockerize production build.
--   Deploy - deploy package in kubernetes with generated web url.
+- Build - try generate production build.
+- Test - run several tests.
+- Package - dockerize production build.
+- Deploy - deploy package in kubernetes with generated web url.
 
 The following events produce the following images:
 
--   Push to a feature branch produces a image based on the feature branch name
--   Merge into develop or main produces a image tag based on the branch name (develop/main) and a new latest tag
--   Creating a repository tag creates an image with the same tag
--   Generates web url `webwallet.develop.bc-labs.dev` for branches develop and main.
--   Generates web url `[branch]-webwallet.develop.bc-labs.dev` for feature branches.
+- Push to a feature branch produces a image based on the feature branch name
+- Merge into develop or main produces a image tag based on the branch name (develop/main) and a new latest tag
+- Creating a repository tag creates an image with the same tag
+- Generates web url `webwallet.develop.bc-labs.dev` for branches develop and main.
+- Generates web url `[branch]-webwallet.develop.bc-labs.dev` for feature branches.
 - for the review deployments a corresponding stop-review action for manual use will be enabled
 - on merging a feature branch into develop or main the review environment is automatically stopped
-
-
-
-
 
 <!-- USAGE EXAMPLES
 

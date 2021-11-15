@@ -19,10 +19,7 @@ interface FormInput {
 const schema = yup
   .object()
   .shape({
-    username: yup
-      .string()
-      .required('common.errors.email-is-required')
-      .email('common.errors.email-is-invalid'),
+    username: yup.string().required('common.errors.email-is-required'),
     password: yup.string().required('common.errors.password-is-required'),
   })
   .required();
@@ -55,7 +52,7 @@ function Login() {
   const { state } = useLocation<any>();
 
   if (user.signedIn) {
-    return <Redirect to={state?.from || '/wallet/dashboard'} />;
+    return <Redirect to={state?.from || '/reports'} />;
   }
 
   return (

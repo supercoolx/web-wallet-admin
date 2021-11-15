@@ -4,40 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EQUS Web Wallet</title>
-    <script type='text/javascript'>
-      //some default pre init
-      var Countly = Countly || {};
-      Countly.q = Countly.q || [];
-      
-      //provide countly initialization parameters
-      Countly.app_key = '5325d564c7d93ce4bdd9d33805f4a7b2fd196a24';
-      Countly.url = 'https://countly.bc-labs.dev';
-      
-      Countly.q.push(['track_sessions']);
-      Countly.q.push(['track_pageview']);
-      Countly.q.push(['track_clicks']);
-      Countly.q.push(['track_scrolls']);
-      Countly.q.push(['track_errors']);
-      Countly.q.push(['track_links']);
-      Countly.q.push(['track_forms']);
-      Countly.q.push(['collect_from_forms']);
-      
-      //load countly script asynchronously
-      (function() {
-         var cly = document.createElement('script'); cly.type = 'text/javascript';
-         cly.async = true;
-         //enter url of script here
-         cly.src = 'https://countly.bc-labs.dev/sdk/web/countly.min.js';
-         cly.onload = function(){Countly.init()};
-         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
-      })();
-      </script>
+    <title>EQUS Wallet Admin</title>
   </head>
   <body>
     <div id="modal"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <noscript><img src='https://countly.bc-labs.dev/pixel.png?app_key=5325d564c7d93ce4bdd9d33805f4a7b2fd196a24&begin_session=1'/></noscript>
   </body>
 </html>

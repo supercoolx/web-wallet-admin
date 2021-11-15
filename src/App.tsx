@@ -14,17 +14,16 @@ import ShimmerPlaceHolder from '@/components/ShimmerPlaceHolder';
 import AuthenticatedRoute from '@/components/AuthenticatedRoute';
 import FooterNav from '@/components/FooterNav';
 import Privacy from '@/views/Privacy';
+import Dashboard from '@/views/Dashboard';
 import Terms from '@/views/Terms';
 import SideModal from '@/components/SideModal';
-import useCountly from './hooks/useCountly';
 import theme from './theme';
 
-const Dashboard = React.lazy(() => import('@/views/Dashboard'));
+const Reports = React.lazy(() => import('@/views/Reports'));
 const Login = React.lazy(() => import('@/views/Login'));
 const Settings = React.lazy(() => import('@/views/Settings'));
 
 function App() {
-  useCountly();
   const queryClient = new QueryClient();
 
   return (
@@ -46,13 +45,16 @@ function App() {
                   <Route exact path="/privacy">
                     <Privacy />
                   </Route>
-                  <AuthenticatedRoute path="/reports">
+                  <AuthenticatedRoute path="/dashboard">
                     <Dashboard />
+                  </AuthenticatedRoute>
+                  <AuthenticatedRoute path="/reports">
+                    <Reports />
                   </AuthenticatedRoute>
                   <AuthenticatedRoute path="/settings">
                     <Settings />
                   </AuthenticatedRoute>
-                  <Redirect to="/reports" />
+                  <Redirect to="/dashboard" />
                 </Switch>
                 <Switch>
                   <AuthenticatedRoute path={['*/m/trade/:action/:currency']}>

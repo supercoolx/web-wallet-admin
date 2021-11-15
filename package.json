@@ -1,15 +1,4 @@
 {
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview",
-    "generate:version": "node scripts/version.js",
-    "lint": "eslint 'src/**/*.ts{,x}'",
-    "lint:quiet": "eslint 'src/**/*.ts{,x}' --quiet",
-    "lint:fix": "eslint 'src/**/*.ts{,x}' --fix",
-    "format": "prettier --write '{,*/**/}*.{js,jsx,json,ts,tsx}'"
-  },
   "dependencies": {
     "@hookform/resolvers": "^2.5.2",
     "@material-ui/core": "^4.11.4",
@@ -66,5 +55,16 @@
     "typescript": "^4.1.2",
     "vite": "^2.3.5",
     "vite-plugin-svgr": "^0.3.0"
-  }
+  },
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite --debug",
+    "format": "prettier --write '{,*/**/}*.{js,jsx,json,ts,tsx}'",
+    "generate:version": "node scripts/version.js",
+    "lint": "eslint 'src/**/*.ts{,x}'",
+    "lint:fix": "eslint 'src/**/*.ts{,x}' --fix",
+    "lint:quiet": "eslint 'src/**/*.ts{,x}' --quiet",
+    "serve": "vite preview"
+  },
+  "version": "0.0.0"
 }
