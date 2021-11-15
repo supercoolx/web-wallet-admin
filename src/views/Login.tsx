@@ -1,6 +1,6 @@
 import { Button, CircularProgress, TextField } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { Link, useLocation, Redirect } from 'react-router-dom';
+import { useLocation, Redirect } from 'react-router-dom';
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
@@ -64,7 +64,7 @@ function Login() {
         background:
           'linear-gradient(176deg, rgba(255,255,255,1) 0, rgba(255,255,255,1) 450px, rgba(237,245,246,1) 450px',
       }}
-      className="min-h-screen w-full"
+      className="w-full min-h-screen"
     >
       <div className="container mx-auto">
         <div className="flex flex-wrap max-w-screen-lg mx-auto mt-20">
@@ -104,14 +104,7 @@ function Login() {
                   <PasswordInput
                     field={field}
                     errorMessage={errors.password?.message}
-                  >
-                    <Link
-                      className="text-sm text-right underline"
-                      to="forgot-password"
-                    >
-                      {t('login.forgot-password')}
-                    </Link>
-                  </PasswordInput>
+                  />
                 )}
               />
 
@@ -129,11 +122,6 @@ function Login() {
                   t('login.login')
                 )}
               </Button>
-              <Link to="/signup">
-                <Button variant="contained" className="w-full">
-                  {t('login.dont-have-an-account')}
-                </Button>
-              </Link>
             </form>
           </div>
         </div>

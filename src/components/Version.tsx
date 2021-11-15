@@ -6,7 +6,7 @@ function Version() {
   return (
     <div className="w-full p-1 text-center">
       <span className="text-sm link-white">
-        Equs Web Wallet: v{semanticVersion}
+        Equs Wallet Admin: v{semanticVersion}
       </span>
     </div>
   );

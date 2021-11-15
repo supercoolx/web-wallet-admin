@@ -12,19 +12,16 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import MainNavigation from '@/components/MainNavigation';
 import ShimmerPlaceHolder from '@/components/ShimmerPlaceHolder';
 import AuthenticatedRoute from '@/components/AuthenticatedRoute';
-import Register from '@/views/Register';
 import FooterNav from '@/components/FooterNav';
 import Privacy from '@/views/Privacy';
 import Terms from '@/views/Terms';
 import SideModal from '@/components/SideModal';
 import useCountly from './hooks/useCountly';
 import theme from './theme';
-import TradeSwitch from './components/TradeSwitch';
 
 const Dashboard = React.lazy(() => import('@/views/Dashboard'));
-const Transactions = React.lazy(() => import('@/views/Transactions'));
-const Market = React.lazy(() => import('@/views/Market'));
 const Login = React.lazy(() => import('@/views/Login'));
+const Settings = React.lazy(() => import('@/views/Settings'));
 
 function App() {
   useCountly();
@@ -43,37 +40,23 @@ function App() {
                   <Route exact path="/login">
                     <Login />
                   </Route>
-                  <Route exact path="/signup">
-                    <Register />
-                  </Route>
                   <Route exact path="/terms">
                     <Terms />
                   </Route>
                   <Route exact path="/privacy">
                     <Privacy />
                   </Route>
-                  <AuthenticatedRoute path="/wallet/dashboard">
+                  <AuthenticatedRoute path="/reports">
                     <Dashboard />
                   </AuthenticatedRoute>
-                  <AuthenticatedRoute path="/wallet/transactions">
-                    <Transactions />
+                  <AuthenticatedRoute path="/settings">
+                    <Settings />
                   </AuthenticatedRoute>
-                  <AuthenticatedRoute path="/wallet/market">
-                    <Market />
-                  </AuthenticatedRoute>
-                  <Redirect to="/wallet/dashboard" />
+                  <Redirect to="/reports" />
                 </Switch>
                 <Switch>
-                  <AuthenticatedRoute
-                    path={[
-                      '*/m/trade/:action/:currency',
-                      '*/m/trade/:action',
-                      '*/m/trade',
-                    ]}
-                  >
-                    <SideModal open>
-                      <TradeSwitch />
-                    </SideModal>
+                  <AuthenticatedRoute path={['*/m/trade/:action/:currency']}>
+                    <SideModal open />
                   </AuthenticatedRoute>
                   {/* more modals might be added here */}
                 </Switch>

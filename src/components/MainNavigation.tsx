@@ -66,28 +66,12 @@ function MainNavigation({ history }: RouteChildrenProps) {
       label: t('navigation.login'),
       path: '/login',
     },
-    {
-      label: t('navigation.signup'),
-      path: '/signup',
-    },
   ];
 
   const signedInNavigation = [
     {
-      label: t('navigation.identity'),
-      path: '/identity',
-    },
-    {
-      label: t('navigation.wallet'),
-      path: '/wallet',
-    },
-    {
-      label: t('navigation.marketplace'),
-      path: '/marketplace',
-    },
-    {
-      label: t('navigation.deposit'),
-      path: '/deposit',
+      label: t('navigation.reports'),
+      path: '/reports',
     },
     {
       label: t('navigation.settings'),

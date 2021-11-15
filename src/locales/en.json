@@ -1,39 +1,21 @@
 {
-  "buy-crypto": {
-    "cancel-purchase": "Cancel Purchase",
-    "enter-amount": "Enter amount",
-    "preview": {
-      "headline": "Preview purchase",
-      "view-in-currency": "View in {{currency}}"
-    },
-    "purchase-preview": "Preview Purchase",
-    "sale-summary": "Sale Summary",
-    "successful": "Crypto currency purchased successfully",
-    "to-be-purchased": "To be purchased"
-  },
   "common": {
     "amount": "Amount",
     "bought": "Bought",
     "buy": "buy",
     "cancel": "Cancel",
-    "check-the-market": "Check the market",
     "close": "Close",
     "copied-to-clipboard": "Copied to clipboard!",
     "copy": "Copy",
-    "crypto-currency": "Crypto Currency",
     "currencies": {
       "btc": {
         "name": "Bitcoin"
       },
       "eth": {
         "name": "Ethereum"
-      },
-      "usdc": {
-        "name": "Stablecoin"
       }
     },
     "currency": "Currency",
-    "current-wallet": "Current Wallet",
     "dashboard": "Dashboard",
     "date": "Date",
     "day": "Day",
@@ -45,16 +27,11 @@
       "email-is-required": "The e-mail address is required",
       "password-is-required": "The password is required"
     },
-    "full-transactions-history": "Full transactions history",
     "hour": "Hour",
     "market": "Market",
     "month": "Month",
-    "payment-provider": "Payment type",
-    "recent-transactions": "Recent transactions",
-    "select-currency": "Select currency",
     "sell": "sell",
     "sold": "Sold",
-    "start-trading": "Start trading",
     "to": "To",
     "today": "Today",
     "total-balance": "Total Balance",
@@ -101,14 +78,6 @@
       "label": "Password"
     }
   },
-  "market": {
-    "about-bitcoin": "About Bitcoin",
-    "about-ethereum": "About Ethereum",
-    "about-stablecoin": "About Stablecoin",
-    "bitcoin-info": "Bitcoin is a decentralized digital currency, without a central bank or single administrator, that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries. Transactions are verified by network nodes through cryptography and recorded in a public distributed ledger called a blockchain. The cryptocurrency was invented in 2008 by an unknown person or group of people using the name Satoshi Nakamoto. The currency began use in 2009 when its implementation was released as open-source software.",
-    "ethereum-info": "Ethereum is a decentralized, open-source blockchain with smart contract functionality. Ether (ETH or Ξ) is the native cryptocurrency of the platform. After Bitcoin, it is the second-largest cryptocurrency by market capitalization. Ethereum is the most actively used blockchain.",
-    "stablecoin-info": "Stablecoins are cryptocurrencies where the price is designed to be pegged to a cryptocurrency, fiat money, or to exchange-traded commodities (such as precious metals or industrial metals)"
-  },
   "navigation": {
     "deposit": "Deposit",
     "identity": "Identity",
@@ -117,84 +86,7 @@
     "marketplace": "Marketplace",
     "settings": "Settings",
     "signup": "Signup",
-    "wallet": "Wallet"
-  },
-  "receive-crypto": {
-    "receive-heading": "Receive Crypto Currency"
-  },
-  "register": {
-    "already-have-an-account": "Already have an Account?",
-    "heading": "The easy way to invest",
-    "register": "Sign Up"
-  },
-  "sell-crypto": {
-    "cancel-sale": "Cancel Sale",
-    "fees-in-currency": "Fees in {{currency}}",
-    "new-balance": "New Wallet Balance",
-    "previous-balance": "Previous Wallet Balance",
-    "sale-confirm": "Confirm Sale",
-    "sale-in-crypto": "Sale in {{currency}}",
-    "sale-in-dollar": "Sale $",
-    "sale-preview": "Preview Sale",
-    "sell-in-currency": "Sell in {{currency}}",
-    "successful": "Crypto currency sold successfully",
-    "summary": "Summary",
-    "to-be-sold": "to be sold"
-  },
-  "send-crypto": {
-    "amount-to-be-sent": "Amount to be sent",
-    "cancel": "Cancel sending",
-    "cancel-sending": "Cancel sending",
-    "current-wallet": "Current Wallet",
-    "enter-recipient": "Enter recipient",
-    "preview": {
-      "headline": "Summary",
-      "view-in-currency": "View in {{currency}}"
-    },
-    "recipient": "Recipient",
-    "remarks": "Remarks (optional)",
-    "send-amount": "Send Amount",
-    "send-heading": "Enter amount to be sent",
-    "sending": "Sending in {{currency}}",
-    "sent-currency-to-recipient": "Send currency to recipient",
-    "successful": "Sent successfully",
-    "summary": "Summary",
-    "to-be-sent": "To be sent"
-  },
-  "trade-crypto": {
-    "cancel-buy": "Cancel Purchase",
-    "cancel-sale": "Cancel Sale",
-    "confirm-buy": "Confirm Purchase",
-    "fees-in-currency": "Fees in {{currency}}",
-    "new-balance": "New Wallet Balance",
-    "previous-balance": "Previous Wallet Balance",
-    "purchase-in-currency": "Purchase in {{currency}}",
-    "sale-confirm": "Confirm Sale",
-    "sale-in-crypto": "Sale in {{currency}}",
-    "sale-in-dollar": "Sale $",
-    "sale-preview": "Preview Sale",
-    "sell-in-currency": "Sell in {{currency}}",
-    "summary": "Summary",
-    "to-be-sold": "to be sold"
-  },
-  "trade-menu": {
-    "buy": "Buy",
-    "buy-description": "Buy cryppto currency to your wallet",
-    "convert": "Convert",
-    "convert-description": "Convert your existing currency to another",
-    "receive": "Receive / request",
-    "receive-description": "Receive crypto from another wallet",
-    "sell": "Sell",
-    "sell-description": "Sell crypto currency from your wallet",
-    "send": "Send",
-    "send-description": "Send crypto to another wallet",
-    "transfer": "Transfer",
-    "transfer-description": "Transfer balance to your bank account"
-  },
-  "transactions": {
-    "no-transactions-yet": "Until now you have not completed any transactions."
-  },
-  "transfer": {
-    "start-trading": "Start trading"
+    "wallet": "Wallet",
+    "reports": "Reports"
   }
 }
