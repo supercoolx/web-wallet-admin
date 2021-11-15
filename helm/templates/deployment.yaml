@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    build: "{{ .Values.deployment.build }}"
+  {{ range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 4
+      maxUnavailable: 0
+  minReadySeconds: {{ .Values.deployment.minReadySeconds }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        release: {{ .Release.Name }}
+      {{ range $key, $value := .Values.labels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
+      annotations:
+      {{- if .Values.prometheus.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "80"
+      {{- end }}
+      {{ range $key, $value := .Values.deployment.annotations }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
+    spec:
+      imagePullSecrets:
+        - name: webwallet-secret
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          livenessProbe:
+            httpGet:
+              path: {{.Values.deployment.baseLivenessPath}}
+              port: {{ .Values.service.internalPort }}
+            initialDelaySeconds: {{ .Values.deployment.minReadySeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{.Values.deployment.baseReadynessPath}}
+              port: {{ .Values.service.internalPort }}
+            initialDelaySeconds: {{ .Values.deployment.minReadySeconds }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}

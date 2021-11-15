@@ -1,0 +1,15 @@
+<svg id="Logo.white" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="222" height="100" viewBox="0 0 222 100">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="43" height="5" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Gruppe_1934" data-name="Gruppe 1934" transform="translate(2)">
+    <text id="EQUS" transform="translate(-2 80)" fill="#f9f9fa" font-size="80" font-family="Muli-Bold, Muli" font-weight="700"><tspan x="0" y="0">EQUS</tspan></text>
+    <g id="Wiederholungsraster_9" data-name="Wiederholungsraster 9" transform="translate(173 89.5)" clip-path="url(#clip-path)">
+      <g transform="translate(-173 -89.5)">
+        <line id="Linie_56" data-name="Linie 56" x2="43" transform="translate(173 92)" fill="none" stroke="#ff0242" stroke-width="5"/>
+      </g>
+    </g>
+  </g>
+</svg>

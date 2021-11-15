@@ -1,0 +1,49 @@
+
+replicaCount: 1
+labels:
+  platform: equs
+  component: webwallet
+
+prometheus:
+  enabled: false
+
+ingress:
+  enabled: false
+  # if you use it locally, make sure it is added to your /etc/hosts !
+  host: webwallet.develop.bc-labs.dev
+  mockService:
+    enabled: false
+    url: mock-server-url
+    port: 80
+    name: webwallet-mock-service
+    replacement: /
+    
+image:
+  repository: docker.slock.it/equs/crypto
+  name: web-wallet
+  tag: latest
+  pullPolicy: Always
+deployment:
+  build: latest
+  minReadySeconds: 10
+  baseLivenessPath: /
+  baseReadynessPath: /
+  annotations:
+    {}
+service:
+  name: webwallet
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 80
+  annotations:
+    {}
+  tls:
+    {}
+#resources:
+#  resources:
+#  limits:
+#    cpu: 200m
+#    memory: 300Mi
+#  requests:
+#    cpu: 100m
+#    memory: 200Mi

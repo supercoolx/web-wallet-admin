@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.sidemenu-appear,
+.sidemenu-enter {
+  opacity: 0;
+}
+.sidemenu-appear-active,
+.sidemenu-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.sidemenu-exit {
+  opacity: 1;
+}
+.sidemenu-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.MuiTableCell-root.MuiTableCell-head {
+  color: white;
+}

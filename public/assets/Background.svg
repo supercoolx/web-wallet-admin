@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="809" viewBox="0 0 460 809">
+  <g id="Background" opacity="0.2">
+    <circle id="Oval" cx="230" cy="230" r="230" transform="translate(0 63)" fill="#eb3141"/>
+    <circle id="Oval-2" data-name="Oval" cx="41" cy="41" r="41" transform="translate(329 727)" fill="#2b44ff"/>
+    <circle id="Oval-3" data-name="Oval" cx="41" cy="41" r="41" transform="translate(241 475)" fill="#2b44ff"/>
+    <path id="Polygon" d="M49,0,98,49,49,98,0,49Z" transform="translate(143)" fill="#2b44ff"/>
+    <path id="Polygon-2" data-name="Polygon" d="M24,0,48,24,24,48,0,24Z" transform="translate(32 690)" fill="#ff9b21"/>
+    <path id="Polygon-3" data-name="Polygon" d="M12,0,24,12,12,24,0,12Z" transform="translate(391 63)" fill="#2026a2"/>
+  </g>
+</svg>

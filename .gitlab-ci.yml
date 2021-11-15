@@ -1,0 +1,306 @@
+image: docker.slock.it/build-images/custody-k8s-deployment-image
+stages:
+  - lint
+  - build
+  - test
+  - package
+  - deploy
+  - post-deploy
+
+eslint:
+  image: docker.slock.it/build-images/node:14-alpine
+  stage: lint
+  tags:
+    - short-jobs
+  script:
+    - yarn install
+    - yarn lint
+
+run-build:
+  image: docker.slock.it/build-images/node:14-alpine
+  stage: build
+  tags:
+    - short-jobs
+  script:
+    - yarn install
+    - yarn build
+
+#test:
+#  stage: test
+#  tags:
+#    - short-jobs
+#  script:
+#    - npm install
+#    - npm run test
+
+package-docker:
+  stage: package
+  image: docker
+  tags:
+    - short-jobs
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  only:
+    - branches
+  except:
+    - main
+    - develop
+
+package-docker-with-latest:
+  stage: package
+  image: docker
+  tags:
+    - short-jobs
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+  only:
+    - main
+    - develop
+  except:
+    - $CI_COMMIT_TAG
+
+package-docker-release-tag:
+  stage: package
+  image: docker
+  tags:
+    - short-jobs
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+
+################################################################################################
+#
+# Deployment definitions
+#
+################################################################################################
+.frontend-deployment: &frontend-deployment
+  - kubectl version
+  - ENVIRONMENT_URL="https://$HOST_URL"
+  - SANITIZED_NAMESPACE=$(echo "$PROJECT_NAMESPACE-ww" | tr '[:upper:]' '[:lower:]')
+  - echo namespace sanitized $SANITIZED_NAMESPACE
+  - >
+    helm upgrade --debug --install --wait --create-namespace --namespace "$SANITIZED_NAMESPACE"
+    --set ingress.enabled=true
+    --set ingress.host=${HOST_URL}
+    --set image.tag=${DEPLOY_TAG}
+    --set image.repository="docker.slock.it/${CI_PROJECT_NAMESPACE}"
+    --set image.name=${CI_PROJECT_NAME}
+    --set ingress.mockService.enabled=${MOCK_SERVER_ENABLED}
+    --set ingress.mockService.url=${MOCK_SERVER_URL}
+    $CI_PROJECT_NAME ./helm
+  - DEPLOYMENTS=$(kubectl get deployments --no-headers=true -n ${SANITIZED_NAMESPACE} | cut -f 1 -d ' ')
+  - >
+    for dpl in $DEPLOYMENTS;
+    do
+        kubectl patch deployment ${dpl} -n ${SANITIZED_NAMESPACE} \
+        -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"build\":\"${CI_JOB_ID}\" }}}}}}"
+    done
+  - >
+    for dpl in $DEPLOYMENTS;
+    do
+        kubectl rollout status -n ${SANITIZED_NAMESPACE} deployment/${dpl}
+    done
+  - echo "Deployment done, visit $ENVIRONMENT_URL"
+
+main-dev-deploy:
+  stage: deploy
+  script:
+    - echo Deploying main branch latest tag to develop
+    - *frontend-deployment
+  variables:
+    HOST_URL: '$DEPLOYMENT_SUBDOMAIN.develop.bc-labs.dev'
+    DEPLOY_TAG: latest
+    PROJECT_NAMESPACE: $KUBE_NAMESPACE
+  environment:
+    name: develop
+    url: https://$HOST_URL
+  only:
+    - main
+  except:
+    - $CI_COMMIT_TAG
+  when: manual
+
+tag-dev-deploy:
+  stage: deploy
+  script:
+    - echo Deploying tag $CI_COMMIT_TAG to develop
+    - *frontend-deployment
+  variables:
+    HOST_URL: '$DEPLOYMENT_SUBDOMAIN.develop.bc-labs.dev'
+    DEPLOY_TAG: $CI_COMMIT_TAG
+    PROJECT_NAMESPACE: $KUBE_NAMESPACE
+  environment:
+    name: develop
+    url: https://$HOST_URL
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+    - when: never
+  needs:
+    - job: package-docker-release-tag
+      artifacts: true
+
+tag-demo-deploy:
+  stage: deploy
+  script:
+    - echo Deploying tag $CI_COMMIT_TAG to demo
+    - *frontend-deployment
+  variables:
+    HOST_URL: '$DEPLOYMENT_SUBDOMAIN.demo.bc-labs.dev'
+    DEPLOY_TAG: $CI_COMMIT_TAG
+    PROJECT_NAMESPACE: $KUBE_NAMESPACE
+  environment:
+    name: demo
+    url: https://$HOST_URL
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+    - when: never
+  needs:
+    - job: package-docker-release-tag
+      artifacts: true
+
+develop-deploy:
+  stage: deploy
+  tags:
+    - testing-deploy
+  script:
+    - echo Deploying latest develop tag to develop
+    - *frontend-deployment
+  variables:
+    HOST_URL: '$DEPLOYMENT_SUBDOMAIN.develop.bc-labs.dev'
+    DEPLOY_TAG: latest
+    PROJECT_NAMESPACE: $KUBE_NAMESPACE
+  environment:
+    name: develop
+    url: https://$HOST_URL
+  only:
+    - develop
+  when: manual
+
+# the front end only into the dev cluster
+review-deploy:
+  stage: deploy
+  script:
+    - echo Deploying tag $CI_COMMIT_REF_SLUG to review
+    - *frontend-deployment
+  tags:
+    - testing-deploy
+  variables:
+    HOST_URL: '$CI_COMMIT_REF_SLUG-$DEPLOYMENT_SUBDOMAIN.$STACK_NAME.develop.bc-labs.dev'
+    DEPLOY_TAG: $CI_COMMIT_REF_SLUG
+    PROJECT_NAMESPACE: $CI_COMMIT_REF_SLUG
+  environment:
+    kubernetes:
+      namespace: '$CI_COMMIT_REF_SLUG-ww'
+    name: review/$CI_COMMIT_REF_SLUG-ww
+    url: https://$HOST_URL
+    on_stop: stop-review
+  only:
+    - branches
+  except:
+    - main
+    - develop
+  needs:
+    - job: package-docker
+      artifacts: false
+
+stop-review:
+  stage: post-deploy
+  script:
+    - echo "uninstalling "
+    - SANITIZED_NAMESPACE=$(echo "$CI_COMMIT_REF_SLUG-ww" | tr '[:upper:]' '[:lower:]')
+    - helm uninstall $CI_PROJECT_NAME --namespace "$SANITIZED_NAMESPACE"
+  when: manual
+  environment:
+    kubernetes:
+      namespace: '$CI_COMMIT_REF_SLUG-ww'
+    name: review/$CI_COMMIT_REF_SLUG-ww
+    action: stop
+  tags:
+    - testing-deploy
+  only:
+    - branches
+  except:
+    - main
+    - develop
+  variables:
+    GIT_STRATEGY: none
+  needs:
+    - job: review-deploy
+      artifacts: false
+
+# qa review deployment jobs
+review-deploy-qa:
+  stage: deploy
+  script:
+    - echo Deploying tag $REF to review
+    - *frontend-deployment
+  tags:
+    - testing-deploy
+  variables:
+    HOST_URL: '$REF-$DEPLOYMENT_SUBDOMAIN.$STACK_NAME.develop.bc-labs.dev'
+    DEPLOY_TAG: $FRONTEND_TAG
+    PROJECT_NAMESPACE: $REF
+  environment:
+    kubernetes:
+      namespace: '$REF-ww'
+    name: review/$REF-ww
+    url: https://$HOST_URL
+    on_stop: stop-review-qa
+  only:
+    - $FRONTEND_TAG
+    - $REF
+
+stop-review-qa:
+  stage: post-deploy
+  script:
+    - echo "uninstalling"
+    - SANITIZED_NAMESPACE=$(echo "$REF-ww" | tr '[:upper:]' '[:lower:]')
+    - helm uninstall $CI_PROJECT_NAME --namespace "$SANITIZED_NAMESPACE"
+  when: manual
+  environment:
+    kubernetes:
+      namespace: '$REF-ww'
+    name: review/$REF-ww
+    action: stop
+  tags:
+    - testing-deploy
+  only:
+    - $REF
+  variables:
+    GIT_STRATEGY: none
+  needs:
+    - job: review-deploy-qa
+      artifacts: false
+
+############################ SECURITY & LICENSE SCANS ########################
+before_script:
+  - echo -e "machine git.slock.it\nlogin gitlab-ci-token\npassword ${CI_JOB_TOKEN}" > ~/.netrc
+
+include:
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+variables:
+  SECURE_LOG_LEVEL: debug
+##############################################################################

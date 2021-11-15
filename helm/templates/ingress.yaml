@@ -1,0 +1,56 @@
+{{- if .Values.ingress.enabled -}}
+{{- if .Values.ingress.mockService.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: {{ .Values.ingress.mockService.name }}
+  name: {{ .Values.ingress.mockService.name }}
+spec:
+  externalName: {{ .Values.ingress.mockService.url }}
+  ports:
+  - port: {{ .Values.ingress.mockService.port }}
+    targetPort: {{ .Values.ingress.mockService.port }}
+    name: http
+    protocol: TCP
+  type: ExternalName
+{{- end }}
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+  {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+spec:
+  virtualhost:
+    fqdn: {{ .Values.ingress.host }}
+  routes:
+  {{- if .Values.ingress.mockService.enabled }}
+  - conditions:
+    - prefix: "/api"
+    services:
+    - name: {{ .Values.ingress.mockService.name }}
+      port: {{ .Values.ingress.mockService.port }}
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: "{{ .Values.ingress.mockService.replacement }}"
+    requestHeadersPolicy:
+      set:
+      - name: Host
+        value: {{ .Values.ingress.mockService.url }}
+  {{- end }}
+  - conditions:
+    - prefix: "/"
+    services:
+    - name: {{ .Values.service.name }}
+      port: 80
+{{- end -}}

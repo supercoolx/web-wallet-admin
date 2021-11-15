@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="399.5" height="182" viewBox="0 0 399.5 182">
+  <defs>
+  	<style type="text/css">
+	@font-face {
+		font-family: "Muli-Bold";
+		src: url("/assets/media/fonts/muli/Muli-Bold.ttf");
+	}
+
+  @font-face {
+		font-family: "Muli";
+		src: url("/assets/media/fonts/muli/Muli.ttf");
+	}
+	</style>
+  </defs>	
+  <g id="Group_1934" data-name="Group 1934" transform="translate(-110.5 -89.029)">
+    <text id="EQUS" transform="translate(111.5 234.029)" stroke="#707070" stroke-width="1" font-size="143" font-family="Muli-Bold, Muli" font-weight="700"><tspan x="0" y="0">EQUS</tspan></text>
+    <line id="Line_56" data-name="Line 56" x2="88" transform="translate(415.5 252.965)" fill="none" stroke="#ff0242" stroke-linecap="round" stroke-width="13"/>
+  </g>
+</svg>

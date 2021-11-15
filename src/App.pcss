@@ -1,0 +1,64 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+  button {
+    @apply focus:outline-none;
+  }
+  a {
+    @apply outline-none;
+  }
+}
+
+@layer utilities {
+  .background-shimmer {
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .background-shimmer:before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: -100%;
+    bottom: 0;
+    animation: backgroundToRight 1s linear infinite;
+    background-size: 50% 100%;
+    background-image: linear-gradient(
+      to right,
+      #f6f7f9 0%,
+      #e9ebee 20%,
+      #f6f7f9 40%,
+      #f6f7f9 100%
+    );
+  }
+
+  @keyframes backgroundToRight {
+    100% {
+      background-position: 100%;
+    }
+  }
+
+  .link-white {
+    @apply text-white text-opacity-50 transition-colors duration-200 ease-in-out hover:text-white;
+  }
+  .link-white:active,
+  .link-white.active {
+    @apply text-opacity-100 text-white;
+  }
+
+  @media (min-width: 768px) {
+    .transition-reveal > .reveal {
+      max-height: 0px;
+      overflow: hidden;
+      transition: max-height 200ms;
+    }
+    .transition-reveal:hover > .reveal {
+      max-height: 100px;
+    }
+  }
+}
