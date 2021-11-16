@@ -24,7 +24,7 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         ws: false,
-        rewrite: path => path.replace(/\/api\/keyloak/, ''),
+        rewrite: path => path.replace(/\/api\/keycloak/, ''),
       },
     },
   },

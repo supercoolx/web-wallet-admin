@@ -1,12 +1,13 @@
-import { makeAutoObservable } from 'mobx';
+/* eslint-disable camelcase */
+import axios, { AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
+import { makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
-import request from '@/helpers/request';
-import { KEYCLOAK_API } from '@/config';
+import { CORS_DISABLED } from '@/config';
 
 const TOKEN_STORAGE_KEY = 'admintoken';
 const SIGNIN_URL =
-  '/api/keycloak/auth/realms/master/protocol/openid-connect/token';
+  '/api/keycloak/auth/realms/wallet/protocol/openid-connect/token';
 
 interface JWT {
   id: string;
@@ -22,12 +23,20 @@ interface JWT {
   sub: string;
 }
 
+type SignInError = {
+  error: string;
+  error_description: string;
+};
+
 type SignInResponse = {
   token: string;
-  message: never;
-} & {
-  token: never;
-  message: string;
+  access_token: string;
+  expires_in: number;
+  refresh_expires_in: number;
+  refresh_token: string;
+  scope: string;
+  session_state: string;
+  token_type: string;
 };
 
 class UserStore {
@@ -60,16 +69,31 @@ class UserStore {
   }
 
   async signIn(username: string, password: string) {
-    const { data, status } = await request<SignInResponse>('post', SIGNIN_URL, {
-      username,
-      password,
-    });
+    const { data, status } = (await axios({
+      data: [
+        'client_id=wallet_admin',
+        'grant_type=password',
+        `password=${password}`,
+        `username=${username}`,
+      ].join('&'),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      method: 'POST',
+      url: SIGNIN_URL,
+      withCredentials: CORS_DISABLED !== 'true',
+      validateStatus(s) {
+        return s >= 200 && s < 500; // only throw on status 500
+      },
+    })) as AxiosResponse<SignInError | SignInResponse>;
 
-    if (status !== 200) {
-      throw new Error(data.message);
+    const errorData = data as SignInError;
+    if (status !== 200 || errorData.error) {
+      throw new Error(errorData.error_description);
     }
 
-    this.setAuth(data.token);
+    const signInData = data as SignInResponse;
+    this.setAuth(signInData.access_token);
   }
 
   setAuth(token: string): void {
