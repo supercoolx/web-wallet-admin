@@ -91,7 +91,7 @@ This is an example of how to list things you need to use the software and how to
 1. Clone the repo
 
     ```sh
-    git clone https://git.slock.it/equs/crypto/web-wallet.git
+    git clone https://git.slock.it/equs/crypto/web-wallet-admin.git
     ```
 
 2. Install NPM packages

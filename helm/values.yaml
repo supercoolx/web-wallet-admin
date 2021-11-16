@@ -17,10 +17,10 @@ ingress:
     port: 80
     name: webwallet-mock-service
     replacement: /
-    
+
 image:
   repository: docker.slock.it/equs/crypto
-  name: web-wallet
+  name: web-wallet-admin
   tag: latest
   pullPolicy: Always
 deployment:

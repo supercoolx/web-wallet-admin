@@ -1,4 +1,4 @@
 apiVersion: v2
-description: Web-wallet front end
+description: Wallet admin front end
 name: webwallet
 version: 0.0.1
