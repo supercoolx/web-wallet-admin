@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/github_username/repo_name">
+  <a href="https://github.com/Dmytro0912/web-wallet-admin">
     <img src="src/assets/EqusLogoLight.svg" alt="Equs" width="80" height="80">
   </a>
 
